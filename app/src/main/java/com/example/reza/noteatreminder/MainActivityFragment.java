@@ -25,12 +25,12 @@ public class MainActivityFragment extends Fragment {
 
     private Button b1,b2,b3,b4;
     private ImageView iv;
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer; //Mediaplayer
 
     private double startTime = 0;
     private double finalTime = 0;
 
-    private Handler myHandler = new Handler();;
+    private Handler myHandler = new Handler();
     private int forwardTime = 5000;
     private int backwardTime = 5000;
     private SeekBar seekbar;
@@ -46,19 +46,19 @@ public class MainActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main,container,false);
 
-        b1 = (Button) rootView.findViewById(R.id.button);
-        b2 = (Button) rootView.findViewById(R.id.button2);
-        b3 = (Button) rootView.findViewById(R.id.button3);
-        b4 = (Button) rootView.findViewById(R.id.button4);
-        iv = (ImageView) rootView.findViewById(R.id.imageView);
+        b1 =  rootView.findViewById(R.id.button);
+        b2 =  rootView.findViewById(R.id.button2);
+        b3 =  rootView.findViewById(R.id.button3);
+        b4 =  rootView.findViewById(R.id.button4);
+        iv =  rootView.findViewById(R.id.imageView);
 
-        tx1 = (TextView) rootView.findViewById(R.id.textView2);
-        tx2 = (TextView) rootView.findViewById(R.id.textView3);
-        tx3 = (TextView) rootView.findViewById(R.id.textView4);
+        tx1 =  rootView.findViewById(R.id.textView2);
+        tx2 =  rootView.findViewById(R.id.textView3);
+        tx3 =  rootView.findViewById(R.id.textView4);
         tx3.setText(R.string.app_name);
 
         mediaPlayer = MediaPlayer.create(MainActivityFragment.super.getActivity(), R.raw.door_bell);
-        seekbar = (SeekBar) rootView.findViewById(R.id.seekBar);
+        seekbar =  rootView.findViewById(R.id.seekBar);
         seekbar.setClickable(false);
         b2.setEnabled(false);
 
