@@ -1,6 +1,7 @@
 package com.example.reza.noteatreminder;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainActivityFragment extends Fragment {
 
-    private Button b1,b2,b3,b4;
+    //private Button b1,b2,b3,b4;
+    private Button b2,b3;
     private ImageView iv;
     private MediaPlayer mediaPlayer; //Mediaplayer
 
@@ -34,7 +36,7 @@ public class MainActivityFragment extends Fragment {
     private int forwardTime = 5000;
     private int backwardTime = 5000;
     private SeekBar seekbar;
-    private TextView tx1,tx2,tx3;
+    private TextView tx3, tx4;
     private int oneTimeOnly = 0;
 
     public MainActivityFragment() {
@@ -46,18 +48,26 @@ public class MainActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main,container,false);
 
-        b1 =  rootView.findViewById(R.id.button);
+        //b1 =  rootView.findViewById(R.id.button);
         b2 =  rootView.findViewById(R.id.button2);
         b3 =  rootView.findViewById(R.id.button3);
-        b4 =  rootView.findViewById(R.id.button4);
+        //b4 =  rootView.findViewById(R.id.button4);
         iv =  rootView.findViewById(R.id.imageView);
 
-        tx1 =  rootView.findViewById(R.id.textView2);
-        tx2 =  rootView.findViewById(R.id.textView3);
-        tx3 =  rootView.findViewById(R.id.textView4);
-        tx3.setText(R.string.app_name);
+        //tx1 =  rootView.findViewById(R.id.textView2);
+        tx3 =  rootView.findViewById(R.id.textView3);
+        tx4 =  rootView.findViewById(R.id.textView4);
+        //tx3.setText(R.string.bell);
 
         mediaPlayer = MediaPlayer.create(MainActivityFragment.super.getActivity(), R.raw.door_bell);
+        AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        try{
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
+        }
+        catch (Exception e){
+            System.out.print("NullPointerException caught" + e.getMessage());
+        }
+
         seekbar =  rootView.findViewById(R.id.seekBar);
         seekbar.setClickable(false);
         b2.setEnabled(false);
@@ -74,17 +84,20 @@ public class MainActivityFragment extends Fragment {
 
                 if (oneTimeOnly == 0) {
                     seekbar.setMax((int) finalTime);
+                    System.out.println("Finaltime is = " + finalTime);
                     oneTimeOnly = 1;
                 }
 
+                /*
                 tx2.setText(String.format(Locale.getDefault(),"%d min, %d sec",
                         TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
                         TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
                                         finalTime)))
                 );
+                */
 
-                tx1.setText(String.format(Locale.getDefault(),"%d min, %d sec",
+                tx3.setText(String.format(Locale.getDefault(),"%d min, %d sec",
                         TimeUnit.MILLISECONDS.toMinutes((long) startTime),
                         TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
@@ -101,14 +114,18 @@ public class MainActivityFragment extends Fragment {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivityFragment.super.getContext(), "Pausing sound"
-                        ,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivityFragment.super.getContext(), "Pausing sound"
+                  //      ,Toast.LENGTH_SHORT).show();
                 mediaPlayer.pause();
+                mediaPlayer.seekTo(0);
+                //seekbar.setProgress(0);
+
                 b2.setEnabled(false);
                 b3.setEnabled(true);
             }
         });
 
+        /*
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,14 +159,18 @@ public class MainActivityFragment extends Fragment {
                 }
             }
         });
+        */
 
         return rootView;
     }
 
+    int roundedCurrentTime;
+    int roundedFinalTime;
+
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
             startTime = mediaPlayer.getCurrentPosition();
-            tx1.setText(String.format(Locale.getDefault(),"%d min, %d sec",
+            tx3.setText(String.format(Locale.getDefault(),"%d min, %d sec",
                     TimeUnit.MILLISECONDS.toMinutes((long) startTime),
                     TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
@@ -157,6 +178,20 @@ public class MainActivityFragment extends Fragment {
             );
             seekbar.setProgress((int)startTime);
             myHandler.postDelayed(this, 100);
+            roundedCurrentTime = (mediaPlayer.getCurrentPosition()/1000);
+            roundedFinalTime = (int) (finalTime/1000);
+            //System.out.println("Rounded: " + roundedCurrentTime + "," + roundedFinalTime);
+            if(roundedCurrentTime == roundedFinalTime){
+
+                b2.setEnabled(false);
+                b3.setEnabled(true);
+                mediaPlayer.seekTo(0);
+                //roundedCurrentTime = 0;
+                //seekbar.setProgress(0);
+                System.out.println("In the if!!!!");
+                //startTime = 0;
+
+            }
         }
     };
 

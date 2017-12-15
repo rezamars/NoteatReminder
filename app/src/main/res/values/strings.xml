@@ -3,9 +3,14 @@
     <string name="action_settings">Settings</string>
     <string name="play_button">Play</string>
 
-    <string name="back"><![CDATA[<]]></string>
+    <string name="door_bell">Door_Bell.mp3</string>
+    <string name="back"><![CDATA[>]]></string>
     <string name="rewind"><![CDATA[<<]]></string>
     <string name="forward"><![CDATA[>>]]></string>
-    <string name="pause">||</string>
+    <string name="stop">STOP</string>
+
+    <string name="sound_player">Sound Player</string>
+    <string name="headline">Not Eat Reminder</string>
+    <string name="desc">Not Eat Reminder - App</string>
 
 </resources>
