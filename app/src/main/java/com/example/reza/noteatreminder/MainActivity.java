@@ -1,5 +1,6 @@
 package com.example.reza.noteatreminder;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private double startTime = 0;
     private double finalTime = 0;
 
-    private Handler myHandler = new Handler();;
+    private Handler myHandler = new Handler();
     private int forwardTime = 5000;
     private int backwardTime = 5000;
     private SeekBar seekbar;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this,SettingsActivity.class));
             return true;
         }
 

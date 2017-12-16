@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">NoteatReminder</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
     <string name="play_button">Play</string>
 
     <string name="door_bell">Door_Bell.mp3</string>
@@ -12,5 +13,36 @@
     <string name="sound_player">Sound Player</string>
     <string name="headline">Not Eat Reminder</string>
     <string name="desc">Not Eat Reminder - App</string>
+
+    <string name="pref_interval">Interval</string>
+    <string name="pref_interval_unit">Interval Unit</string>
+    <string name="pref_units_key" translatable="false">units</string>
+    <string name="pref_interval_key" translatable="false">interval</string>
+    <string name="pref_units_minutes" translatable="false">minutes</string>
+    <string name="pref_units_hours" translatable="false">hours</string>
+    <string name="pref_units_label_minutes">Minutes</string>
+    <string name="pref_units_label_hours">Hours</string>
+
+    <string name="pref_unit_default">hours</string>
+    <string name="pref_interval_default">1</string>
+
+    <string name="pref_interval_one">1</string>
+    <string name="pref_interval_two">2</string>
+    <string name="pref_interval_three">3</string>
+    <string name="pref_interval_four">4</string>
+    <string name="pref_interval_five">5</string>
+    <string name="pref_interval_ten">10</string>
+    <string name="pref_interval_fifteen">15</string>
+    <string name="pref_interval_twenty">20</string>
+    <string name="pref_interval_thirty">30</string>
+    <string name="pref_interval_fifty">50</string>
+
+    <string name="pref_enable_notifications_key" translatable="false">enable_notifications</string>
+    <string name="pref_enable_notifications_label">Sound Notifications</string>
+    <string name="pref_enable_notifications_true">Enabled</string>
+    <string name="pref_enable_notifications_false">Not Enabled</string>
+    <string name="pref_enable_notifications_default" translatable="false">true</string>
+
+
 
 </resources>
