@@ -3,6 +3,7 @@ package com.example.reza.noteatreminder;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -39,7 +40,20 @@ public class MainActivityFragment extends Fragment {
     private TextView tx3, tx4;
     private int oneTimeOnly = 0;
 
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri dateUri);
+    }
+
     public MainActivityFragment() {
+
     }
 
     @Override
