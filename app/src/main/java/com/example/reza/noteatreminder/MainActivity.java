@@ -1,10 +1,12 @@
 package com.example.reza.noteatreminder;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,25 +21,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback{
 
-    private Button b1,b2,b3,b4;
-    private ImageView iv;
-    private MediaPlayer mediaPlayer;
-
-    private double startTime = 0;
-    private double finalTime = 0;
-
-    private Handler myHandler = new Handler();
-    private int forwardTime = 5000;
-    private int backwardTime = 5000;
-    private SeekBar seekbar;
-    private TextView tx1,tx2,tx3;
-
-    private int oneTimeOnly = 0;
-
+    private Timer myTimer;
 
 
     @Override
@@ -47,19 +37,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         //getSupportActionBar().setElevation(0f);
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        myTimer = new Timer();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String unitKey = this.getString(R.string.pref_units_key);
+        String chosenUnit = prefs.getString(unitKey,"not existing");
+
+        String intervalKey = this.getString(R.string.pref_interval_key);
+        String chosenInterval = prefs.getString(intervalKey,"2");
+
+        int interval = Integer.parseInt(chosenInterval);
+        System.out.println("this.get interval= " + interval);
+
+        myTimer.schedule(new TimerTask() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void run() {
+                TimerMethod();
             }
-        });
-        */
+
+        }, 0, 10000);
 
     }
 
@@ -98,4 +95,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     public void onItemSelected(Uri dateUri) {
         //startActivity(new Intent(this,SettingsActivity.class));
     }
+
+    private void TimerMethod()
+    {
+        //This method is called directly by the timer
+        //and runs in the same thread as the timer.
+
+        //We call the method that will work with the UI
+        //through the runOnUiThread method.
+        this.runOnUiThread(Timer_Tick);
+    }
+
+
+    private Runnable Timer_Tick = new Runnable() {
+        public void run() {
+
+            //This method runs in the same thread as the UI.
+
+            //Do something to the UI thread here
+            System.out.println("10 seconds.");
+            SoundPlayer.playTheSound();
+        }
+    };
 }

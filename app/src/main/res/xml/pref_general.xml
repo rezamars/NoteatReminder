@@ -14,6 +14,12 @@
         />
         -->
 
+    <CheckBoxPreference
+        android:title="@string/pref_reminder_label"
+        android:key="@string/pref_reminder_status_key"
+        android:summaryOff="@string/pref_reminder_status_false"
+        android:summaryOn="@string/pref_reminder_status_true"
+        android:defaultValue="@string/pref_reminder_status_default" />
 
     <ListPreference
         android:title="@string/pref_interval_unit"
