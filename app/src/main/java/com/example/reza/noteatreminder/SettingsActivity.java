@@ -17,13 +17,12 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener,
-Runnable{
+public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener{
 
     public static SettingsActivity settingsActivity;
     private AppCompatDelegate mDelegate;
 
-    private static Timer myTimer;
+    private static Timer myTimer ;
     private static SharedPreferences prefs;
     private static String unitKey;
     private static String chosenUnit;
@@ -33,6 +32,7 @@ Runnable{
     private static int timerInterval;
     private static String reminderKey;
     private static boolean reminderOn = false;
+    private boolean firstTime = true;
 
     public SettingsActivity(){
         this.settingsActivity = this;
@@ -42,28 +42,19 @@ Runnable{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //moveTaskToBack(true);
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
-        //bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_reminder_status_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_interval_key)));
-        //bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_enable_notifications_key)));
 
         startTimer();
     }
 
 
     public void startTimer(){
-
-
 
         myTimer = new Timer();
 
@@ -76,7 +67,7 @@ Runnable{
                 TimerMethod();
             }
 
-        }, 0, (timerInterval/6));
+        }, 0, timerInterval);
 
     }
 
@@ -84,12 +75,17 @@ Runnable{
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         unitKey = this.getString(R.string.pref_units_key);
-        chosenUnit = prefs.getString(unitKey,"not existing");
+
+
 
         intervalKey = this.getString(R.string.pref_interval_key);
         chosenInterval = prefs.getString(intervalKey,"2");
 
-        interval = Integer.parseInt(chosenInterval);
+        if(firstTime){
+            interval = Integer.parseInt(chosenInterval);
+            chosenUnit = prefs.getString(unitKey,"not existing");
+            firstTime = false;
+        }
 
 
         timerInterval = 10000;
@@ -117,23 +113,23 @@ Runnable{
     }
 
 
-    private static Runnable Timer_Tick = new Runnable() {
+    private Runnable Timer_Tick = new Runnable() {
         public void run() {
 
-            //This method runs in the same thread as the UI.
 
-            //Do something to the UI thread here
-            //settingsActivity.getSettingValues();
-            System.out.println("timerInterval: " + timerInterval);
-            reminderKey = settingsActivity.getString(R.string.pref_reminder_status_key);
-            reminderOn = prefs.getBoolean(reminderKey,false);
-            if(reminderOn){
-                
-                SoundPlayer.playTheSound();
-            }
-            else{
-                System.out.println("The reminder is OFF!");
-            }
+                //This method runs in the same thread as the UI.
+                System.out.println("timerinterval = " + timerInterval);
+
+                reminderKey = settingsActivity.getString(R.string.pref_reminder_status_key);
+                reminderOn = prefs.getBoolean(reminderKey,false);
+                if(reminderOn){
+
+                    SoundPlayer.playTheSound();
+                }
+                else{
+                    System.out.println("The reminder is OFF!");
+                }
+
 
         }
     };
@@ -158,35 +154,54 @@ Runnable{
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
 
-        //System.out.println("preference..." + preference + ",value: "+ value);
-
         String stringValue = value.toString();
 
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
             // the preference's 'entries' list (since they have separate labels/values).
-            System.out.println("onPreferenceChange, instanceof listpreference.");
 
             ListPreference listPreference = (ListPreference) preference;
             int prefIndex = listPreference.findIndexOfValue(stringValue);
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
+
+                if(listPreference.getKey().equalsIgnoreCase("interval")){
+
+                    CharSequence charSequence = listPreference.getEntries()[prefIndex];
+                    final StringBuilder sb = new StringBuilder(charSequence.length());
+                    sb.append(charSequence);
+                    String str = sb.toString();
+                    interval = Integer.parseInt(str);
+
+                    if(!firstTime){
+                        myTimer.cancel();
+                        myTimer = null;
+                        settingsActivity.startTimer();
+                    }
+                }
+                else if(listPreference.getKey().equalsIgnoreCase("units")){
+
+                    System.out.println("there 1...");
+                    if(!firstTime){
+                        myTimer.cancel();
+                        myTimer = null;
+                        CharSequence charSequence = listPreference.getEntries()[prefIndex];
+                        final StringBuilder sb = new StringBuilder(charSequence.length());
+                        sb.append(charSequence);
+                        chosenUnit = sb.toString();;
+                        settingsActivity.startTimer();
+                        System.out.println("interval= " + interval);
+                        System.out.println("unit= " + listPreference.getEntries()[prefIndex]);
+
+                    }
+
+                }
+
             }
         } else {
             // For other preferences, set the summary to the value's simple string representation.
-            System.out.println("onPreferenceChange, else");
             preference.setSummary(stringValue);
         }
-
-        if(myTimer != null){
-            System.out.println("new timer!!!");
-            myTimer.cancel();
-            myTimer.purge();
-            myTimer = null;
-        }
-
-        startTimer();
-
 
         return true;
     }
@@ -214,26 +229,4 @@ Runnable{
         return mDelegate;
     }
 
-    @Override
-    public void run() {
-        while (true) {
-            try {
-                Thread.sleep(1000);
-                reminderKey = settingsActivity.getString(R.string.pref_reminder_status_key);
-                reminderOn = prefs.getBoolean(reminderKey,false);
-                if(reminderOn){
-                    //startTimer();
-                }
-                else{
-                    myTimer.cancel();
-                    System.out.println("The reminder is OFF!");
-                }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
 }

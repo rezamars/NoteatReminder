@@ -3,17 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--
-    <android.support.v7.widget.Toolbar
-
-        android:id="@+id/my_awesome_toolbar"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
-        android:layout_width="match_parent"
-        android:minHeight="@dimen/abc_action_bar_default_height_material"
-        android:background="?attr/colorPrimary"
-        />
-        -->
-
     <CheckBoxPreference
         android:title="@string/pref_reminder_label"
         android:key="@string/pref_reminder_status_key"
@@ -34,12 +23,5 @@
         android:defaultValue="@string/pref_interval_default"
         android:entryValues="@array/pref_interval_values"
         android:entries="@array/pref_interval_values" />
-
-    <CheckBoxPreference
-        android:title="@string/pref_enable_notifications_label"
-        android:key="@string/pref_enable_notifications_key"
-        android:summaryOff="@string/pref_enable_notifications_false"
-        android:summaryOn="@string/pref_enable_notifications_true"
-        android:defaultValue="@string/pref_enable_notifications_default" />
 
 </PreferenceScreen>

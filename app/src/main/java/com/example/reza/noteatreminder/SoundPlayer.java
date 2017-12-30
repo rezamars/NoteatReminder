@@ -19,10 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 public class SoundPlayer {
 
-    //private Button b1,b2,b3,b4;
     private Button b2,b3;
     private ImageView iv;
-    private static MediaPlayer mediaPlayer; //Mediaplayer
+    private static MediaPlayer mediaPlayer;
 
     private double startTime = 0;
     private double finalTime = 0;
@@ -73,7 +72,7 @@ public class SoundPlayer {
             public void onClick(View v) {
                 Toast.makeText(mainActivityFragment.getContext(), "Playing sound"
                         ,Toast.LENGTH_SHORT).show();
-                //mediaPlayer.start();
+
                 playTheSound();
 
                 finalTime = mediaPlayer.getDuration();
@@ -143,7 +142,7 @@ public class SoundPlayer {
                 b2.setEnabled(false);
                 b3.setEnabled(true);
                 mediaPlayer.seekTo(0);
-                System.out.println("In the if!!!!");
+                //System.out.println("In the if!!!!");
 
             }
         }

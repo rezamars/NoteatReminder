@@ -27,72 +27,15 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback{
 
-    /*
-    private Timer myTimer;
-    private SharedPreferences prefs;
-    private String unitKey;
-    private String chosenUnit;
-    private String intervalKey;
-    private String chosenInterval;
-    private int interval;
-    private int timerInterval;
-    */
-    private Intent settingsIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getSupportActionBar().setElevation(0f);
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
-        //settingsIntent = new Intent(this, SettingsActivity.class);
-        //startActivity(settingsIntent);
-
-        //startTimer();
     }
 
-    /*
-    public void startTimer(){
-
-        myTimer = new Timer();
-
-        getSettingValues();
-
-        myTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                TimerMethod();
-            }
-
-        }, 0, (timerInterval/6));
-
-    }
-
-    public void getSettingValues(){
-
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        unitKey = this.getString(R.string.pref_units_key);
-        chosenUnit = prefs.getString(unitKey,"not existing");
-
-        intervalKey = this.getString(R.string.pref_interval_key);
-        chosenInterval = prefs.getString(intervalKey,"2");
-
-        interval = Integer.parseInt(chosenInterval);
-
-
-        timerInterval = 10000;
-        if(chosenUnit.equalsIgnoreCase("minutes")){
-            timerInterval = interval * 60 * 1000;
-        }
-        else if(chosenUnit.equalsIgnoreCase("hours")){
-            timerInterval = interval * 60 * 60 * 1000;
-        }
-
-        //System.out.println("timerinterval = " + timerInterval);
-
-    }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,9 +65,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     protected void onResume() {
         super.onResume();
 
-        //MainActivityFragment ff = (MainActivityFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
-
-
     }
 
     @Override
@@ -132,27 +72,4 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         //startActivity(new Intent(this,SettingsActivity.class));
     }
 
-    /*
-    private void TimerMethod()
-    {
-        //This method is called directly by the timer
-        //and runs in the same thread as the timer.
-
-        //We call the method that will work with the UI
-        //through the runOnUiThread method.
-        this.runOnUiThread(Timer_Tick);
-    }
-
-
-    private Runnable Timer_Tick = new Runnable() {
-        public void run() {
-
-            //This method runs in the same thread as the UI.
-
-            //Do something to the UI thread here
-            System.out.println("timerInterval: " + timerInterval);
-            SoundPlayer.playTheSound();
-        }
-    };
-    */
 }
